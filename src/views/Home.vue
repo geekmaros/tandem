@@ -1,18 +1,73 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+  <main class="home w-full bg-red-600 font-serif text-white">
+    <div class="wrapper relative">
+      <div class="top text-center">
+        <h1 class="font-bold leading-relaxed text-white font-sans text-3xl ">
+          Enter Your Username
+        </h1>
+        <div class="input-form my-3 ">
+          <form action="" @submit="dispatchToSetUSerName">
+            <label for="username"></label>
+            <input
+              id="username"
+              type="text"
+              v-model="username"
+              class="h-12 w-full username rounded-full pl-3 py-2 font-semibold bg-white focus:outline-none focus:border-2 focus:border-tandempink text-tandempurple"
+            />
+            <span
+              v-if="error"
+              class=" text-tandempink w-auto mx-32 rounded px-2 mt-4 bg-white  text-xs block"
+              >username cannot be empty</span
+            >
+
+            <div
+              @click="dispatchToSetUSerName"
+              class="block cursor-pointer ml-10 mr-10 bg-tandempink border-2 border-white text-2xl mx-auto font-semibold font-sans rounded-full px-4 py-1 mt-3  shadow-xl focus:outline-none"
+            >
+              Let's Play!
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="instructions text-center">
+        <p class="instruct"><b>Read the following Instructions</b></p>
+        <p>Enter your username</p>
+        <p>You have 10 Trivial questions to answer</p>
+        <p>Get all answers correctly to be amongst the Leaderboard</p>
+      </div>
+    </div>
+  </main>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+import { mapActions } from "vuex";
 export default {
   name: "Home",
-  components: {
-    HelloWorld
-  }
+  data() {
+    return {
+      username: null,
+      error: false
+    };
+  },
+  methods: {
+    ...mapActions({ setuser: "user/setUserName" }),
+    dispatchToSetUSerName(e) {
+      e.preventDefault();
+      if (this.username === "" || this.username === null) {
+        this.error = true;
+        return;
+      }
+      const currentPlayer = this.username;
+      this.setuser(currentPlayer);
+      this.error = false;
+      this.$router.push({ name: "QuizPage", params: { currentPlayer } });
+    }
+  },
+  components: {}
 };
 </script>
+<style scoped lang="scss">
+main {
+}
+</style>
