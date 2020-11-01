@@ -12,9 +12,10 @@
               TandemTrivia
             </h1>
 
-            <p>Score: {{ score }}</p>
-
-            <p>Welcome: <span>Geeky</span></p>
+            <p class="text-sm">
+              Current Player:
+              <span class="text-tandempurple text-base">{{ username }}</span>
+            </p>
           </div>
           <h1 class="text-tandempink text-lg font-semibold">
             Question <span>{{ currentQuestion + 1 }}</span> /
@@ -103,13 +104,23 @@
         class="score-wrapper font-sans text-center items-center h-auto rounded-lg bg-white pt-10 px-5 pb-10"
       >
         <div class="img-wrapper flex justify-center items-center mb-8 ">
-          <img class="img-svg  h-40" src="../assets/svg/10.svg" alt="" />
+          <img class="img-svg  h-40" :src="svgSrc" alt="" />
         </div>
-        <h1 class="text-2xl font-bold">Impressive Performance</h1>
-        <p class="user text-3xl font-bold text-tandempurple">Geeky</p>
+        <h1 v-if="score === 100" class="text-2xl font-bold">
+          Impressive Performance
+        </h1>
+        <h1 v-else-if="score >= 80" class="text-2xl font-bold">
+          Great Performance
+        </h1>
+        <h1 v-else-if="score >= 50" class="text-2xl font-bold">
+          Good Performance
+        </h1>
+        <h1 v-else class="text-2xl font-bold">
+          Ooops Not so good
+        </h1>
+        <p class="user text-3xl font-bold text-tandempurple">{{ username }}</p>
         <p class="text-lg mt-4">
-          Total Score: <span>{{ score }}</span
-          >/ {{ questionBank.length }}
+          Total Score: <span>{{ score }} </span>/ {{ questionBank.length * 10 }}
         </p>
 
         <div class="btn-wrapper w-full flex justify-center items-center">
@@ -145,7 +156,6 @@ import {
   shuffler,
   generateUniqueNumbersOfElementFromArray
 } from "../HelperFunctions";
-
 export default {
   name: "QuizPage",
   data() {
@@ -159,23 +169,7 @@ export default {
     };
   },
   created: function() {
-    const questionArray = api;
-    const newQuestionBank = questionArray.map(item => {
-      // const option = [];
-      return {
-        question: item.question,
-        options: [...item.incorrect, item.correct],
-        shuffledOptions: shuffler([...item.incorrect, item.correct]),
-        correctAnswer: item.correct,
-        isAnswered: false
-      };
-    });
-
-    this.questionBank = generateUniqueNumbersOfElementFromArray(
-      10,
-      newQuestionBank
-    );
-    console.log(this.questionBank);
+    this.fetchAndPopulateQuestionBank();
   },
   watch: {},
   methods: {
@@ -203,12 +197,45 @@ export default {
     submitButton() {
       this.showScore = true;
     },
+    fetchAndPopulateQuestionBank() {
+      const questionArray = api;
+      const newQuestionBank = questionArray.map(item => {
+        // const option = [];
+        return {
+          question: item.question,
+          options: [...item.incorrect, item.correct],
+          shuffledOptions: shuffler([...item.incorrect, item.correct]),
+          correctAnswer: item.correct,
+          isAnswered: false
+        };
+      });
+
+      this.questionBank = generateUniqueNumbersOfElementFromArray(
+        10,
+        newQuestionBank
+      );
+      console.log(this.questionBank);
+    },
     resetButton() {
       this.showScore = false;
+      this.currentQuestion = 0;
       this.score = 0;
+      this.fetchAndPopulateQuestionBank();
     }
   },
-  computed: {}
+  computed: {
+    username() {
+      return this.$store.getters["user/getPlayer"];
+    },
+    svgSrc() {
+      if (this.score >= 80) {
+        return require("../assets/svg/10.svg");
+      } else if (this.score >= 50) {
+        return require("../assets/svg/below10.svg");
+      }
+      return require("../assets/svg/below5.svg");
+    }
+  }
 };
 </script>
 
