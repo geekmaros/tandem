@@ -1,6 +1,8 @@
 <template>
-  <main class="home w-full bg-red-600 font-serif text-white">
-    <div class="wrapper relative">
+  <main
+    class="home w-full h-screen  font-serif text-white flex justify-center items-center"
+  >
+    <div class=" relative my-auto">
       <div class="top text-center">
         <h1 class="font-bold leading-relaxed text-white font-sans text-3xl ">
           Enter Your Username
