@@ -8,9 +8,10 @@
           Enter Your Username
         </h1>
         <div class="input-form my-3 ">
-          <form action="" @submit="dispatchToSetUSerName">
+          <form action="" @submit.prevent="dispatchToSetUSerName">
             <label for="username"></label>
             <input
+              data-username
               id="username"
               type="text"
               v-model="username"

@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-
+// import store from "../store/index";
 Vue.use(VueRouter);
 
 const routes = [
@@ -44,5 +44,11 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
-
+// router.beforeEach((to, from, next) => {
+//   if (to.name === "QuizPage" && store.state.user.currentPlayer === null) {
+//     next({ name: "QuizPage" });
+//     // } else if (to.name === "QuizPage" && localStorage.getItem("trivia")) {
+//     //   next({ name: "QuizPage" });
+//   } else next();
+// });
 export default router;

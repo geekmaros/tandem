@@ -3,6 +3,9 @@
     class="text-tandempink font-serif w-full h-screen  flex justify-center items-center"
   >
     <div class="wrapper max-w-3xl w-full">
+      <button @click="newGame" class="bg-white p-3 rounded-lg mb-4 font-bold">
+        New Game
+      </button>
       <div v-show="!showScore" class="quiz-card-wrapper  w-full  shadow-2xl ">
         <div
           class="top-header  w-full flex flex-col md:flex-row items-center bg-white rounded-lg justify-between font-sans px-5 pt-5 pb-5"
@@ -151,11 +154,13 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import api from "../api/api.json";
 import {
-  shuffler,
-  generateUniqueNumbersOfElementFromArray
+  generateUniqueNumbersOfElementFromArray,
+  shuffler
 } from "../HelperFunctions";
+
 export default {
   name: "QuizPage",
   data() {
@@ -163,16 +168,33 @@ export default {
       questionBank: null,
       currentQuestion: 0,
       score: 0,
-      isAnswered: false,
       optionLabel: ["A", "B", "C", "D"],
-      showScore: false
+      showScore: false,
+      setupForReload: {}
     };
   },
   created: function() {
-    this.fetchAndPopulateQuestionBank();
+    if (localStorage.getItem("trivia")) {
+      const trivia = JSON.parse(localStorage.getItem("trivia"));
+      this.setuser(trivia.user);
+      this.questionBank = trivia.questionBank;
+      this.currentQuestion = trivia.currentQuestion;
+      this.score = trivia.score;
+    } else {
+      this.fetchAndPopulateQuestionBank();
+      console.log(this.setupForReload);
+    }
   },
-  watch: {},
+  watch: {
+    setupForReload: {
+      handler(newValue) {
+        localStorage.setItem("trivia", JSON.stringify(newValue));
+      },
+      deep: true
+    }
+  },
   methods: {
+    ...mapActions({ setuser: "user/setUserName" }),
     selectAnswer(selectedAnswer, correctAnswer, question) {
       // this.selectedQuestions.push(questionIndex);
       question.isAnswered = true;
@@ -181,13 +203,18 @@ export default {
         if (this.confirmAnswer(selectedAnswer, correctAnswer)) {
           this.score += 10;
         }
-        console.log(selectedAnswer, correctAnswer, question);
       }, 1000);
     },
     confirmAnswer(option, answer) {
       return option === answer;
     },
     nextButton() {
+      this.setupForReload = {
+        questionBank: this.questionBank,
+        user: this.username,
+        score: this.score,
+        currentQuestion: this.currentQuestion + 1
+      };
       this.currentQuestion++;
     },
     skipButton() {
@@ -214,13 +241,16 @@ export default {
         10,
         newQuestionBank
       );
-      console.log(this.questionBank);
     },
     resetButton() {
       this.showScore = false;
       this.currentQuestion = 0;
       this.score = 0;
       this.fetchAndPopulateQuestionBank();
+    },
+    newGame() {
+      localStorage.removeItem("trivia");
+      this.$router.push({ name: "Home" });
     }
   },
   computed: {
