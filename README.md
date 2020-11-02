@@ -37,8 +37,9 @@ yarn lint
 * The correct answer must be revealed after a user has submitted their answer
 * A user can see the score they received at the end of the round
 
-#Additional Feature
+# Additional Feature
 * Data persist on page reload or refresh, user's can continue quiz from last visited question
+* I Added PWA functionality and offline use for mobile devices.
 * I added an Index page that enables user to add their username before playing TandemTrivia
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
