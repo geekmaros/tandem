@@ -1,8 +1,8 @@
 <template>
   <section
-    class="text-tandempink font-serif w-full h-screen  flex justify-center items-center"
+    class="text-tandempink font-serif w-full h-screen  flex justify-center items-center p-5 md:p-5"
   >
-    <div class="wrapper max-w-3xl w-full">
+    <div class="wrapper md:max-w-3xl w-full">
       <button @click="newGame" class="bg-white p-3 rounded-lg mb-4 font-bold">
         New Game
       </button>

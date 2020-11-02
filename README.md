@@ -1,4 +1,8 @@
-# tandem
+# Tandem Trivia App
+
+##System Dependencies
+* Nodejs 14.15.0 LTS (Recomended for Linux user)
+* Vue CLI v4.5 
 
 ## Project setup
 ```

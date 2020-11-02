@@ -1,6 +1,6 @@
 <template>
   <main
-    class="home w-full h-screen  font-serif text-white flex justify-center items-center"
+    class="home w-full h-screen  font-serif text-white flex justify-center items-center px-5 md:px-0"
   >
     <div class=" relative my-auto">
       <div class="top text-center">
@@ -19,7 +19,7 @@
             />
             <span
               v-if="error"
-              class=" text-tandempink w-auto mx-32 rounded px-2 mt-4 bg-white  text-xs block"
+              class=" text-tandempink w-auto w-full  rounded px-2 mt-4 bg-white  text-xs block"
               >username cannot be empty</span
             >
 
@@ -32,11 +32,11 @@
           </form>
         </div>
       </div>
-      <div class="instructions text-center">
+      <div class="instructions text-center font-semibold">
         <p class="instruct"><b>Read the following Instructions</b></p>
         <p>Enter your username</p>
         <p>You have 10 Trivial questions to answer</p>
-        <p>Get all answers correctly to be amongst the Leaderboard</p>
+        <p>Enjoy!!!</p>
       </div>
     </div>
   </main>
